@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "assignment_1.h"
+#include "test.h"
 
 int main(int argc, char* argv[]) {
     if (argc != 4) {

@@ -5,7 +5,7 @@ CFLAGS = -Wall -g
 LDLIBS = 
 
 # Define sets of source files and object files
-SRC = dict1.c assignment_1.c 
+SRC = dict1.c test.c 
 # OBJ is the same as SRC, just replace .c with .o
 OBJ = $(SRC:.c=.o)
  
