@@ -50,6 +50,17 @@ typedef struct Address {
 } Address_t;
 
 
+<<<<<<< HEAD
+=======
+static const char *field_names[] = {
+    "PFI", "EZI_ADD", "SRC_VERIF", "PROPSTATUS", "GCODEFEAT", "LOC_DESC",
+    "BLGUNTTYP", "HSAUNITID", "BUNIT_PRE1", "BUNIT_ID1", "BUNIT_SUF1",
+    "BUNIT_PRE2", "BUNIT_ID2", "BUNIT_SUF2", "FLOOR_TYPE", "FLOOR_NO_1",
+    "FLOOR_NO_2", "BUILDING", "COMPLEX", "HSE_PREF1", "HSE_NUM1", "HSE_SUF1",
+    "HSE_PREF2", "HSE_NUM2", "HSE_SUF2", "DISP_NUM1", "ROAD_NAME", "ROAD_TYPE",
+    "RD_SUF", "LOCALITY", "STATE", "POSTCODE", "ACCESSTYPE", "x", "y"
+};
+>>>>>>> 48ea172ff845c2a228e79e9dff51c7acc793b7b3
 
 typedef struct Node {
     Address_t data;
@@ -58,4 +69,7 @@ typedef struct Node {
 
 Node_t* read_csv(char* filename, FILE* out_file);
 Node_t* create_node(Address_t* address);
+<<<<<<< HEAD
 #endif 
+=======
+>>>>>>> 48ea172ff845c2a228e79e9dff51c7acc793b7b3

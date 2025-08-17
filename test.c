@@ -44,7 +44,10 @@ Node_t* read_csv(char* filename, FILE* out_file) {
     } */ 
 
     Node_t* head = NULL;
+<<<<<<< HEAD
     Node_t* tail = NULL;
+=======
+>>>>>>> 48ea172ff845c2a228e79e9dff51c7acc793b7b3
     char line[MAX_LENGTH];
 
     // 跳过标题行
@@ -131,4 +134,9 @@ Node_t* create_node(Address_t* address) {
     new_node->data = *address;
     new_node->next = NULL;
     return new_node;
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> 48ea172ff845c2a228e79e9dff51c7acc793b7b3

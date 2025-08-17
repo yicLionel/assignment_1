@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+<<<<<<< HEAD
 #include "test.h"
 
 char* char_turn_into_binary(char letter);
@@ -15,3 +16,7 @@ static const char *field_names[] = {
     "HSE_PREF2", "HSE_NUM2", "HSE_SUF2", "DISP_NUM1", "ROAD_NAME", "ROAD_TYPE",
     "RD_SUF", "LOCALITY", "STATE", "POSTCODE", "ACCESSTYPE", "x", "y"
 };
+=======
+
+char* turn_into_binary(char letter);
+>>>>>>> 48ea172ff845c2a228e79e9dff51c7acc793b7b3

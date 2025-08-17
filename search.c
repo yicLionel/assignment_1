@@ -1,6 +1,7 @@
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>
+<<<<<<< HEAD
 #include <string.h>
 #include "search.h"
 #include "test.h"  
@@ -70,3 +71,21 @@ int compare_key(Node_t *head, char* input_key, FILE* out_file){
        return result;
        
        }
+=======
+#include "search.h"
+
+char* turn_into_binary(char letter){
+    int ascii = (int)letter;
+    char *binary = malloc(9) ;
+    for (int position = 7; position>= 0; position--){
+        if(ascii - (int)pow(2, position) >= 0){
+            binary[7-position] ='1';
+            ascii -=(int)pow(2,position);
+        }else{
+            binary[7-position] ='0';
+        }
+    }
+    binary[8]='\0';
+    return binary;}
+
+>>>>>>> 48ea172ff845c2a228e79e9dff51c7acc793b7b3
