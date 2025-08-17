@@ -9,7 +9,7 @@
 
 
 typedef struct Address {
-    char PFI[MAX_LEN_NUM];
+    char PFI[MAX_CHAR];//改了长度
     char EZI_ADD[MAX_CHAR];
     char SRC_VERIF[MAX_CHAR];
     char PROPSTATUS[MAX_CHAR];
@@ -42,15 +42,24 @@ typedef struct Address {
     char STATE[MAX_CHAR];
     char POSTCODE[MAX_CHAR];
     char ACCESSTYPE[MAX_CHAR];
-    char x[MAX_CHAR];
-    char y[MAX_CHAR];
+    long double x;
+    long double y;
 } Address_t;
+
+
+static const char *field_names[] = {
+    "PFI", "EZI_ADD", "SRC_VERIF", "PROPSTATUS", "GCODEFEAT", "LOC_DESC",
+    "BLGUNTTYP", "HSAUNITID", "BUNIT_PRE1", "BUNIT_ID1", "BUNIT_SUF1",
+    "BUNIT_PRE2", "BUNIT_ID2", "BUNIT_SUF2", "FLOOR_TYPE", "FLOOR_NO_1",
+    "FLOOR_NO_2", "BUILDING", "COMPLEX", "HSE_PREF1", "HSE_NUM1", "HSE_SUF1",
+    "HSE_PREF2", "HSE_NUM2", "HSE_SUF2", "DISP_NUM1", "ROAD_NAME", "ROAD_TYPE",
+    "RD_SUF", "LOCALITY", "STATE", "POSTCODE", "ACCESSTYPE", "x", "y"
+};
 
 typedef struct Node {
     Address_t data;
     struct Node* next;
 } Node_t;
-
 
 Node_t* read_csv(char* filename, FILE* out_file);
 Node_t* create_node(Address_t* address);
