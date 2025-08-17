@@ -1,3 +1,6 @@
+#ifndef TEST_H  // 如果未定义 TEST_H
+#define TEST_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,7 +12,7 @@
 
 
 typedef struct Address {
-    char PFI[MAX_LEN_NUM];
+    char PFI[MAX_CHAR];//改了长度
     char EZI_ADD[MAX_CHAR];
     char SRC_VERIF[MAX_CHAR];
     char PROPSTATUS[MAX_CHAR];
@@ -42,15 +45,17 @@ typedef struct Address {
     char STATE[MAX_CHAR];
     char POSTCODE[MAX_CHAR];
     char ACCESSTYPE[MAX_CHAR];
-    char x[MAX_CHAR];
-    char y[MAX_CHAR];
+    long double x;
+    long double y;
 } Address_t;
+
+
 
 typedef struct Node {
     Address_t data;
     struct Node* next;
 } Node_t;
 
-
 Node_t* read_csv(char* filename, FILE* out_file);
 Node_t* create_node(Address_t* address);
+#endif 
