@@ -48,7 +48,7 @@ int count_bit(const char* a, const char* b){
         }
         i++;
     }
-    return i+8; // 字符串完全相同或到达较短字符串的末尾，返回比较的位数
+    return i + sizeof(Address_t*); // 字符串完全相同或到达较短字符串的末尾，返回比较的位数
 }
 
 // 返回值改成了void
