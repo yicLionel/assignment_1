@@ -13,7 +13,7 @@
 char* char_turn_into_binary(char letter){
     int ascii = (int)letter;
     char *binary = malloc(9);
-    assert(binary);
+    assert(binary); // 增加了assert
     for (int position = 7; position>= 0; position--){
         if (ascii & (1 << position)) {
     binary[7 - position] = '1';
@@ -27,7 +27,7 @@ char* char_turn_into_binary(char letter){
 char* string_into_binary(const char* whole_str){
     int str_len = strlen(whole_str);
     char* str_binary = malloc(str_len * 8 + 1);
-    assert(str_binary);
+    assert(str_binary); // 增加了assert
     str_binary[0] = '\0';
     for(int str_index =0; str_index < str_len; str_index++){
         char * char_binary = char_turn_into_binary(whole_str[str_index]);
@@ -43,7 +43,8 @@ int count_bit(const char* a, const char* b){
     int i = 0;
     while (a[i] != '\0' && b[i] != '\0') {
         if (a[i] != b[i]) {
-            return i + 1; // 返回第一个不匹配的位数（1-based）
+            return i + 1; // 比如1010和1100做比较，第一位相同，第二位不同，但其实已经检查了这两位
+                          // 第二位对应的i是1，所以返回i+1次比较
         }
         i++;
     }
@@ -52,14 +53,14 @@ int count_bit(const char* a, const char* b){
 
 // 返回值改成了void
 void compare_key(Node_t *head, char* input_key, FILE* out_file){
-    // Exit if head or input_key is null
+    // 检查空指针或空输入
     if(!head || !input_key){
         return;
     }
     Node_t * curr_line = head;
     int result = 0;
 
-    // Counters
+    // 记录比较数量
     int node_comparisons = 0;
     int string_comparisons = 0;
     int bit_comparisons = 0;
