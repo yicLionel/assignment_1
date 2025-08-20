@@ -17,7 +17,7 @@ char* turn_into_binary(char letter){
     return binary;
 }
 int main() {
-    char *bits = turn_into_binary('7');
+    char *bits = turn_into_binary('1');
     printf("%s\n", bits);  // 输出 01000001
     free(bits);
     return 0;

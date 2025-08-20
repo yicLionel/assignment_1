@@ -25,7 +25,6 @@ int main(int argc, char* argv[]) {
     char keyword[MAX_CHAR];
 
     while(1){
-        fflush(stdout);
         if(fgets(keyword, MAX_CHAR, stdin) == NULL){
             break;
 
@@ -33,13 +32,13 @@ int main(int argc, char* argv[]) {
         keyword[strcspn(keyword, "\n")] = '\0';
         // printf("%s\n", keyword);  这句我觉得可以去了，相当于把输入的句子重新又在终端输出一遍
         printf("%s ", keyword);
-        // 修改了一下返回值和具体细节操作
+        // 修改了一下该函数的返回值和具体细节操作
         compare_key(head, keyword, out_file);
 
     }
 
     
-    // 不确定我们需不需要记录节点总数
+    
     int count = 0;
     Node_t* current = head;
     while (current != NULL) {
