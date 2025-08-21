@@ -1,60 +1,73 @@
+/* dict1.c 
+*
+* Created by Yichen YAN (yicyan2@student.unimelb.edu.au) and
+*            Chang Lu (CLLU8@student.unimelb.edu.au)
+* Date: 20/08/2025
+*
+*
+* Build a dictionary by reading data from a file. 
+* It will insert each address record as a node in a linked list.
+* Also implementing a search tool that looks for a key in the list 
+* and outputs any records that match the key.
+*/
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "search.h"
 
 int main(int argc, char* argv[]) {
+    // Check if the number of command-line arguments is 4
     if (argc != 4) {
         fprintf(stderr, "Usage: %s <stage> <input_file> <output_file>\n", argv[0]);
         return 1;
     }
     
+    // Check if the stage parameter is "1"
     if (strcmp(argv[1], "1") != 0) {
         fprintf(stderr, "Invalid stage: %s\n", argv[1]);
         return 1;
     }
 
-    FILE* out_file = fopen(argv[3], "a");// w改成a，持续接受输出
+    // Open the output file
+    FILE* out_file = fopen(argv[3], "w");
+
+    // Check if file opening failed
     if (!out_file) {
         fprintf(stderr, "Cannot open output file %s\n", argv[3]);
         return 1;
-    } else {
-        fprintf(stderr, "Opened output file %s\n", argv[3]);
     }
-    Node_t* head = read_csv(argv[2], NULL); 
+    
+    // Read the CSV file into a linked list, and head is pointing to the first node
+    Node_t* head = read_csv(argv[2]); 
+    // Array to store the keyword
     char keyword[MAX_CHAR];
 
+    // Continuously read the keyword from stdin that user inputs 
     while(1){
+        // Exit on the end of file or input error
         if(fgets(keyword, MAX_CHAR, stdin) == NULL){
             break;
-
-        }//这里可以去掉？
+        }
+        // Replace newline character to null character
         keyword[strcspn(keyword, "\n")] = '\0';
-        // printf("%s\n", keyword);  这句我觉得可以去了，相当于把输入的句子重新又在终端输出一遍
+
         printf("%s ", keyword);
-        // 修改了一下该函数的返回值和具体细节操作
         compare_key(head, keyword, out_file);
-
     }
-
-    
-    
-    int count = 0;
-    Node_t* current = head;
-    while (current != NULL) {
-        count++;
-        current = current->next;
-    }
-    printf("Total records read: %d\n", count);
 
     fclose(out_file);
     
-    current = head;
+    // Free memory allocated for the linked list
+    Node_t* current = head;
     while (current != NULL) {
         Node_t* temp = current;
+        // Free the first 33 fields
+        for (int i = 0; i < NUM_COL - NUM_DOUBLE; i++) {
+            free(temp->data.fields[i]);  // Free the memory allocated for each field
+        }
         current = current->next;
-        free(temp);
+        free(temp);  // Free the node
     }
-
-    return 0;
 }

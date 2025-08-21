@@ -4,8 +4,16 @@
 #include <string.h>
 #include <assert.h>
 #include "search.h"
+#include "field.h"  
 
-#include "test.h"  
+static const char *field_names[] = {
+    "PFI", "EZI_ADD", "SRC_VERIF", "PROPSTATUS", "GCODEFEAT", "LOC_DESC",
+    "BLGUNTTYP", "HSAUNITID", "BUNIT_PRE1", "BUNIT_ID1", "BUNIT_SUF1",
+    "BUNIT_PRE2", "BUNIT_ID2", "BUNIT_SUF2", "FLOOR_TYPE", "FLOOR_NO_1",
+    "FLOOR_NO_2", "BUILDING", "COMPLEX", "HSE_PREF1", "HSE_NUM1", "HSE_SUF1",
+    "HSE_PREF2", "HSE_NUM2", "HSE_SUF2", "DISP_NUM1", "ROAD_NAME", "ROAD_TYPE",
+    "RD_SUF", "LOCALITY", "STATE", "POSTCODE", "ACCESSTYPE", "x", "y"
+};
 
 /* Converts a single character to its 8-bit binary string representation. */
 char* char_turn_into_binary(char letter){
@@ -14,14 +22,15 @@ char* char_turn_into_binary(char letter){
     assert(binary); 
 
     // Convert the ASCII value of the character to an 8-bit binary string
-    for (int position = 7; position>= 0; position--){
+    for (int position = 7; position >= 0; position--){
         if (ascii & (1 << position)) {
     binary[7 - position] = '1'; // Set '1' if bit is set
 } else {
     binary[7 - position] = '0'; // Set '0' if bit is not set
 }
     }
-    binary[8]='\0';
+    // Set the null terminator
+    binary[8] = '\0';
     return binary;
 }
 
@@ -33,7 +42,7 @@ char* string_into_binary(const char* whole_str){
     str_binary[0] = '\0';
 
     // Convert each character to binary and append to result
-    for(int str_index =0; str_index < str_len; str_index++){
+    for(int str_index = 0; str_index < str_len; str_index++){
         char * char_binary = char_turn_into_binary(whole_str[str_index]);
         strcat(str_binary, char_binary); // Append current character's binary
         free(char_binary);
@@ -43,7 +52,7 @@ char* string_into_binary(const char* whole_str){
 
 /*  Counts the number of bits compared until the first mismatch. */
 int count_bit(const char* a, const char* b){
-    if (!a || !b) return 0; // 空指针检查
+    if (!a || !b) return 0; // Check for null pointers
     int i = 0;
     while (a[i] != '\0' && b[i] != '\0') {
         if (a[i] != b[i]) {
@@ -74,7 +83,7 @@ void compare_key(Node_t *head, char* input_key, FILE* out_file){
     fprintf(out_file, "%s \n", input_key);
     while(curr_line){
         node_comparisons++; // Read one node
-        char *curr_line_binary = string_into_binary(curr_line->data.EZI_ADD);
+        char *curr_line_binary = string_into_binary(curr_line->data.fields[1]);
         if (!curr_line_binary) {
             free(input_binary);
             return; // Fail to allocate memory
@@ -87,20 +96,14 @@ void compare_key(Node_t *head, char* input_key, FILE* out_file){
         if(strcmp(input_binary, curr_line_binary) == 0){
             num_records++;
             fprintf(out_file, "-->");
-            char *every_field = (char *)&(curr_line->data);  
-
             // Handle the first 33 fields of strings
-            for (int i = 0; i < NUM_COL-2; i++) {
-                // Ensure fields ends with null terminator
-                every_field[MAX_CHAR - 1] = '\0'; 
-                // Print field
-                fprintf(out_file, " %s: %s ||", field_names[i], every_field); 
-                every_field += MAX_CHAR;// Skip to next field
-}
-
+            for (int i = 0; i < NUM_COL - NUM_DOUBLE; i++) {
+                // fields[i] is the i'th field that being dynamic allocated
+                fprintf(out_file, " %s: %s ||", field_names[i], curr_line->data.fields[i]); 
+            }
             // Handle the last two long double fields
-            fprintf(out_file," %s: %Lf ||", field_names[NUM_COL-2], curr_line->data.x);
-            fprintf(out_file," %s: %Lf ||\n", field_names[NUM_COL-1], curr_line->data.y);
+            fprintf(out_file," %s: %Lf ||", field_names[NUM_COL - 2], curr_line->data.x);
+            fprintf(out_file," %s: %Lf ||\n", field_names[NUM_COL -1 ], curr_line->data.y);
             // Flush the output file
             fflush(out_file);
         }
@@ -110,13 +113,15 @@ void compare_key(Node_t *head, char* input_key, FILE* out_file){
     }
     free(input_binary);
 
+    if (num_records < 1) {
+        printf("NOTFOUND");
+        return;
+    }
     // Print the number of records found
-    printf(" --> %d records found - comparisons: ", num_records);
+    printf("--> %d records found - comparisons: ", num_records);
 
     // Print the number of comparisons of bit, node and string in the terminal window
     printf("b%d ", bit_comparisons);
     printf("n%d ", node_comparisons);
-    printf("s%d", string_comparisons);
-    printf("\n");
-
+    printf("s%d\n", string_comparisons);
 }
